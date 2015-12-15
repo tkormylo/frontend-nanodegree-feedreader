@@ -65,13 +65,30 @@ $(function() {
     /* TODO: Write a new test suite named "The menu" */
     describe('The menu', function() {
 
+        // Utilizing an idea from the Udacity forums, we can add an
+        // "toHaveClass" matcher. This will be helpful for seeing
+        // if a certain element has a specific class. We are using the
+        // "jasmine-jQuery" library found here...
+        // https://github.com/velesin/jasmine-jquery
+        beforeEach(function () {
+            jasmine.addMatchers({ // Add a "toHaveClass" matcher to use with jasmine
+                toHaveClass: function () {
+                    return {
+                        compare: function (actual, className) {
+                            return { pass: $(actual).hasClass(className)}
+                        }
+                    }
+                }
+            }); // end adding "toHaveClass" matcher to use with jasmine
+        });
+
         /* TODO: Write a test that ensures the menu element is
          * hidden by default. You'll have to analyze the HTML and
          * the CSS to determine how we're performing the
          * hiding/showing of the menu element.
          */
         it('should hide the menu element by default', function() {
-
+            expect($('body')).toHaveClass('menu-hidden');
         });
 
          /* TODO: Write a test that ensures the menu changes
@@ -79,14 +96,29 @@ $(function() {
           * should have two expectations: does the menu display when
           * clicked and does it hide when clicked again.
           */
-      });
+        it('should change visibility to VISIBLE when the menu icon is clicked', function() {
+            var menu = $('.menu-icon-link'); // assign the needed element to a variable
+            menu.click() // click the menu
+
+            // verify the menu-hidden class is not present for the document body
+            expect(document.body.classList.contains('menu-hidden')).toBe(false);
+        });
+
+        it('should change visibility to NOT VISIBLE when the menu icon is clicked a SECOND time', function() {
+            var menu = $('.menu-icon-link'); // assign the needed element to a variable
+            menu.click() // click the menu a second time
+
+            // verify the menu-hidden class is present for the document body
+            expect(document.body.classList.contains('menu-hidden')).toBe(true);
+        });
+    });
 
     /* TODO: Write a new test suite named "Initial Entries" */
 
         /* TODO: Write a test that ensures when the loadFeed
          * function is called and completes its work, there is at least
          * a single .entry element within the .feed container.
-         * Remember, loadFeed() is asynchronous so this test wil require
+         * Remember, loadFeed() is asynchronous so this test will require
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
