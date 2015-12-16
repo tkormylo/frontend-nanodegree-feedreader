@@ -21,46 +21,56 @@ $(function() {
          * allFeeds in app.js to be an empty array and refresh the
          * page?
          */
-        it('are defined', function() {
+
+        it('should not have an undefined or empty feeds array', function() {
+            // Check that the allFeeds array is defined
             expect(allFeeds).toBeDefined();
+            // Check that the length of the allFeeds array is not 0 (empty)
             expect(allFeeds.length).not.toBe(0);
         });
-
 
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a URL defined
          * and that the URL is not empty.
          */
-         it('should not have any undefined URLs', function() {
+
+         it('should not any undefined URLs in the allFeeds array', function() {
+            // loop through each element of the array and ensure the URL for
+            // each feed is defined.
             for(var i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).toBeDefined();
             }
          });
 
-         it('should not have any empty URLs', function() {
+         it('should not have any empty URLs in the allFeeds array', function() {
+            // Loop through each element of the array and ensure the URL for each feed
+            // is not an empty string.
             for(var i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].url).not.toBe('');
             }
          });
 
-
         /* TODO: Write a test that loops through each feed
          * in the allFeeds object and ensures it has a name defined
          * and that the name is not empty.
          */
+
          it('should not have any undefined names', function() {
+            // Loop through each element of the array and ensure the name for each feed
+            // is not undefined.
             for(var i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].name).toBeDefined();
             }
          });
 
          it('should not have any empty names', function() {
+            // Loop through each element of the array and ensure the name for each feed
+            // is not an empty string.
             for(var i = 0; i < allFeeds.length; i++) {
                 expect(allFeeds[i].name).not.toBe('');
             }
          });
     });
-
 
     /* TODO: Write a new test suite named "The menu" */
     describe('The menu', function() {
@@ -88,6 +98,7 @@ $(function() {
          * hiding/showing of the menu element.
          */
         it('should hide the menu element by default', function() {
+            // Check that the body has the class "menu-hidden" after the page loads
             expect($('body')).toHaveClass('menu-hidden');
         });
 
@@ -123,21 +134,65 @@ $(function() {
          * the use of Jasmine's beforeEach and asynchronous done() function.
          */
 
+        // run the loadFeed function before each "it" test
         beforeEach(function(done) {
-            loadFeed(0, done);
+            loadFeed(0, done); // Run the loadFeed function
         });
 
-        it('should have a least a single entry element when loadFeed completes', function() {
+        it('should have a least a single entry element when loadFeed completes', function(done) {
+            // Check that the feed div container has at least one child
             expect($('.feed').children().length).not.toBe(0);
+            done();
         });
     });
 
-
-
-    /* TODO: Write a new test suite named "New Feed Selection"
+    /* TODO: Write a new test suite named "New Feed Selection" */
+    describe('New Feed Selection', function() {
 
         /* TODO: Write a test that ensures when a new feed is loaded
          * by the loadFeed function that the content actually changes.
          * Remember, loadFeed() is asynchronous.
          */
+
+         // Create a local array variables to hold the html of the feed headers
+         var feedHeaderPre = [];
+         var feedHeaderPost = [];
+
+         beforeEach(function(done) {
+            // Iterate through each "feed header" element and
+            // push the "html" of that header element into an
+            // array for later comparison.
+            $('.feed').find('.entry h2').each(function() {
+                feedHeaderPre.push($(this).html());
+            });
+            // Now that we have all the "feed" element header html
+            // saved, we can re-run the loadFeed function using a
+            // different "id" to load new feed items.
+            loadFeed(1, done);
+        });
+
+         // Create an "afterEach" function to reset the feed elements
+         // to what they were before the test was ran. This idea did not
+         // really occur to me, but after reviewing course discussions, it
+         // appeared many others were performing a similar action and it makes
+         // sense. We don't want to alter the initial load for a test then leave it.
+         afterEach(function (done) {
+            loadFeed(0, done);
+            done();
+         });
+
+        it('should change the content of the feed when the loadFeed function completes', function(done) {
+            // Iterate through each "feed header" element and
+            // push the "html" of that header element into an
+            // array for later comparison.
+            $('.feed').find('.entry h2').each(function() {
+                feedHeaderPost.push($(this).html());
+            });
+            // Check to see if the initial load array object
+            // is the same as the secondary load array object.
+            // If they match, the content was not updated.
+            expect(feedHeaderPre).not.toBe(feedHeaderPost);
+            done();
+        });
+    });
 }());
