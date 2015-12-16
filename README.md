@@ -1,4 +1,7 @@
 # Project Overview
+2015 12 16 - Author: Thomas Kormylo - How to run the application:
+    To run this applicaiton please load the index.html file in your preferred browser. The initial development efforts were completed using Google Chrome Canary and Sublime Text 3. Once you have loaded the index.html file in your preferred browser, please take note of the tests embedded witin the web page (scroll to the bottom of the page). All tests should show in a green (passing) text. If any tests have failed, an error will appear desribing the reason for the failure and dispaly in / with red text indication.
+
 
 In this project you are given a web-based application that reads RSS feeds. The original developer of this application clearly saw the value in testing, they've already included [Jasmine](http://jasmine.github.io/) and even started writing their first test suite! Unfortunately, they decided to move on to start their own company and we're now left with an application with an incomplete test suite. That's where you come in.
 
